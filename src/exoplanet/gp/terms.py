@@ -111,11 +111,12 @@ class Term(object):
         c = self.get_complex_coefficients()
         return list(chain(r, c))
 
-    def get_celerite_matrices(self, x, diag):
+    def get_celerite_matrices(self, x, diag, Q):
         x = tt.as_tensor_variable(x)
         diag = tt.as_tensor_variable(diag)
         ar, cr, ac, bc, cc, dc = self.coefficients
-        a = diag + tt.sum(ar) + tt.sum(ac)
+        a = diag + tt.diag(Q)[:, None]*(tt.sum(ar) + tt.sum(ac))
+        a = tt.reshape(a.T, (1, a.size))[0]
         U = tt.concatenate(
             (
                 ar[None, :] + tt.zeros_like(x)[:, None],
@@ -126,6 +127,7 @@ class Term(object):
             ),
             axis=1,
         )
+        U = tt.slinalg.kron(U, Q)
 
         V = tt.concatenate(
             (
@@ -135,10 +137,13 @@ class Term(object):
             ),
             axis=1,
         )
+        V = tt.slinalg.kron(V, tt.eye(Q.shape[0]))
 
+        x = tt.reshape(tt.tile(x, (Q.shape[0], 1)).T, (1, x.size*Q.shape[0]))[0]
         dx = x[1:] - x[:-1]
         c = tt.concatenate((cr, cc, cc))
         P = tt.exp(-c[None, :] * dx[:, None])
+        P = tt.tile(P, (1, Q.shape[0]))
 
         return a, U, V, P
 

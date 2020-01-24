@@ -48,7 +48,7 @@ class GP:
 
     __citations__ = ("celerite",)
 
-    def __init__(self, kernel, x, diag, J=-1, model=None):
+    def __init__(self, kernel, x, diag, J=-1, model=None, Q=[[1]]):
         add_citations_to_model(self.__citations__, model=model)
 
         self.kernel = kernel
@@ -56,13 +56,14 @@ class GP:
             J = self.kernel.J
             if J > 32:
                 J = -1
-        self.J = J
+        self.J = J*np.shape(Q)[0]
 
         self.z = None
         self.x = tt.as_tensor_variable(x)
+        self.Q = tt.as_tensor_variable(Q)
         self.diag = tt.as_tensor_variable(diag)
         self.a, self.U, self.V, self.P = self.kernel.get_celerite_matrices(
-            self.x, self.diag
+            self.x, self.diag, self.Q
         )
         self.factor_op = FactorOp(J=self.J)
         self.d, self.W, _, self.flag = self.factor_op(
