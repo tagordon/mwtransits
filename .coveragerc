@@ -1,7 +1,0 @@
-[run]
-omit =
-    *_test.py
-    *__init__*
-    exoplanet/interp.py
-    exoplanet/theano_ops/interp/regular_grid.py
-    exoplanet/orbits/dur_to_ecc.py
