@@ -3,6 +3,8 @@ import exoplanet as xo
 import matplotlib.pyplot as pl
 import utils
 import itertools
+import theano
+from theano import tensor as tt
 
 red = '#FE4365'
 blue = '#00A9FF'
@@ -47,20 +49,23 @@ logs0 = 2 * logs0  - logw0
 
 oneband = [fisher(t, tparams, [ls, logw0, logq, d]) for ls, d in zip(logs0, diag)]
 twoband = [fisher(t, tparams, [ls, logw0, logq, 2*d], a=a) for ls, d, in zip(logs0, diag)]
-
+oneband = np.array(oneband).T
+twoband = np.array(twoband).T
 np.savetxt('data/fisher_oneband_{0}.txt'.format(w0T), oneband)
 np.savetxt('data/fisher_twoband_{0}.txt'.format(w0T), twoband)
 
 fig, ax = pl.subplots(figsize=(10, 7))
-pl.semilogy(log10_amp_ratio, oneband[:,0], color=red, label=r"$\Delta$t")
-pl.semilogy(log10_amp_ratio, oneband[:,1], color=blue, label=r"$R_p/R_*$")
-pl.semilogy(log10_amp_ratio, oneband[:,2], color=yellow, label=r"$d$")
-pl.semilogy(log10_amp_ratio, oneband[:,3], color=green, label=r"$t_\mathrm{in}$")
+x = np.log10(np.exp(logr))
 
-pl.semilogy(log10_amp_ratio, twoband[:,0], color=red, linestyle='--')
-pl.semilogy(log10_amp_ratio, twoband[:,1], color=blue, linestyle='--')
-pl.semilogy(log10_amp_ratio, twoband[:,2], color=yellow, linestyle='--')
-pl.semilogy(log10_amp_ratio, twoband[:,3], color=green, linestyle='--')
+pl.semilogy(x, oneband[0], color=red, label=r"$\Delta$t")
+pl.semilogy(x, oneband[1], color=blue, label=r"$R_p/R_*$")
+pl.semilogy(x, oneband[2], color=yellow, label=r"$d$")
+pl.semilogy(x, oneband[3], color=green, label=r"$t_\mathrm{in}$")
+
+pl.semilogy(x, twoband[0], color=red, linestyle='--')
+pl.semilogy(x, twoband[1], color=blue, linestyle='--')
+pl.semilogy(x, twoband[2], color=yellow, linestyle='--')
+pl.semilogy(x, twoband[3], color=green, linestyle='--')
 pl.legend()
 pl.xlabel(r"$\log(\alpha/\sigma)$")
 pl.ylabel(r"$\log(\sigma_\theta)$")
@@ -72,20 +77,21 @@ logs0 = 2 * logs0  - logw0
 
 oneband = [fisher(t, tparams, [ls, logw0, logq, d]) for ls, d in zip(logs0, diag)]
 twoband = [fisher(t, tparams, [ls, logw0, logq, 2*d], a=a) for ls, d, in zip(logs0, diag)]
-
+oneband = np.array(oneband).T
+twoband = np.array(twoband).T
 np.savetxt('data/fisher_oneband_{0}.txt'.format(w0T), oneband)
 np.savetxt('data/fisher_twoband_{0}.txt'.format(w0T), twoband)
 
 fig, ax = pl.subplots(figsize=(10, 7))
-pl.semilogy(log10_amp_ratio, oneband[:,0], color=red, label=r"$\Delta$t")
-pl.semilogy(log10_amp_ratio, oneband[:,1], color=blue, label=r"$R_p/R_*$")
-pl.semilogy(log10_amp_ratio, oneband[:,2], color=yellow, label=r"$d$")
-pl.semilogy(log10_amp_ratio, oneband[:,3], color=green, label=r"$t_\mathrm{in}$")
+pl.semilogy(x, oneband[0], color=red, label=r"$\Delta$t")
+pl.semilogy(x, oneband[1], color=blue, label=r"$R_p/R_*$")
+pl.semilogy(x, oneband[2], color=yellow, label=r"$d$")
+pl.semilogy(x, oneband[3], color=green, label=r"$t_\mathrm{in}$")
 
-pl.semilogy(log10_amp_ratio, twoband[:,0], color=red, linestyle='--')
-pl.semilogy(log10_amp_ratio, twoband[:,1], color=blue, linestyle='--')
-pl.semilogy(log10_amp_ratio, twoband[:,2], color=yellow, linestyle='--')
-pl.semilogy(log10_amp_ratio, twoband[:,3], color=green, linestyle='--')
+pl.semilogy(x, twoband[0], color=red, linestyle='--')
+pl.semilogy(x, twoband[1], color=blue, linestyle='--')
+pl.semilogy(x, twoband[2], color=yellow, linestyle='--')
+pl.semilogy(x, twoband[3], color=green, linestyle='--')
 pl.legend()
 pl.xlabel(r"$\log(\alpha/\sigma)$")
 pl.ylabel(r"$\log(\sigma_\theta)$")
