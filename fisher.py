@@ -12,6 +12,13 @@ yellow = '#ECA25C'
 green = '#3F9778'
 darkblue = '#005D7F'
 
+pl.rc('xtick', labelsize=20)
+pl.rc('ytick', labelsize=20)
+pl.rc('axes', labelsize=25)
+pl.rc('axes', titlesize=30)
+pl.rc('legend', fontsize=20)
+pl.rc('lines', linewidth=4)
+
 def fisher(t, tparams, gpparams, a=[1]):
     a = np.array(a)
     log_s, log_w0, log_q, diag = gpparams
