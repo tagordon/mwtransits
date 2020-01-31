@@ -56,7 +56,7 @@ class GP:
             J = self.kernel.J
             if J > 32:
                 J = -1
-        self.J = J*np.shape(Q)[0]
+        self.J = J
 
         self.z = None
         self.x = tt.as_tensor_variable(x)

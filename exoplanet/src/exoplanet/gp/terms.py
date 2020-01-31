@@ -144,6 +144,7 @@ class Term(object):
         c = tt.concatenate((cr, cc, cc))
         P = tt.exp(-c[None, :] * dx[:, None])
         P = tt.tile(P, (1, Q.shape[0]))
+        P = tt.extra_ops.CpuContiguous(P)
 
         return a, U, V, P
 
