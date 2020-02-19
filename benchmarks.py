@@ -56,59 +56,59 @@ def benchmark(N, M, J, maxtime=10.0, trials=3, batch=10):
     return total / (batch*k)
     
 # benchmarks for M as a function of N
-M = np.arange(1, 6, 1)
-N = np.arange(1000, 11000, 1000)
-J = 1
+#M = np.arange(1, 6, 1)
+#N = np.arange(1000, 11000, 1000)
+#J = 1
 
-res = np.zeros((len(M), len(N)))
-for i, j in itertools.product(range(len(M)), range(len(N))):
-    res[i, j] = benchmark(N[j], M[i], J)
-np.savetxt("data/benchmarks_MN.txt", res)
+#res = np.zeros((len(M), len(N)))
+#for i, j in itertools.product(range(len(M)), range(len(N))):
+#    res[i, j] = benchmark(N[j], M[i], J)
+#np.savetxt("data/benchmarks_MN.txt", res)
 
-pl.figure(figsize=(10, 7))
-for i in range(len(M)):
-    pl.loglog(N, res[i], '.-', color=colors[i%len(colors)], 
-              markeredgecolor='k', label="M={0}".format(M[i]))
-pl.legend()
-pl.savefig("plots/benchmarks_MN.pdf")
+#pl.figure(figsize=(10, 7))
+#for i in range(len(M)):
+#    pl.loglog(N, res[i], '.-', color=colors[i%len(colors)], 
+#              markeredgecolor='k', label="M={0}".format(M[i]))
+#pl.legend()
+#pl.savefig("plots/benchmarks_MN.pdf")
 
 # benchmarks for M as a function of J 
-M = np.arange(1, 6, 1)
-J = np.arange(10, 110, 10)
-N = 100
+#M = np.arange(1, 6, 1)
+#J = np.arange(10, 110, 10)
+#N = 100
 
-res = np.zeros((len(M), len(J)))
-for i, j in itertools.product(range(len(M)), range(len(J))):
-    res[i, j] = benchmark(N, M[i], J[j])
-np.savetxt("data/benchmarks_MJ.txt", res)
+#res = np.zeros((len(M), len(J)))
+#for i, j in itertools.product(range(len(M)), range(len(J))):
+#    res[i, j] = benchmark(N, M[i], J[j])
+#np.savetxt("data/benchmarks_MJ.txt", res)
 
-pl.figure(figsize=(10, 7))
-for i in range(len(M)):
-    pl.loglog(J, res[i], '.-', color=colors[i%len(colors)], 
-              markeredgecolor='k', label="M={0}".format(M[i]))
-pl.legend()
-pl.savefig("plots/benchmarks_MJ.pdf")
+#pl.figure(figsize=(10, 7))
+#for i in range(len(M)):
+#    pl.loglog(J, res[i], '.-', color=colors[i%len(colors)], 
+#              markeredgecolor='k', label="M={0}".format(M[i]))
+#pl.legend()
+#pl.savefig("plots/benchmarks_MJ.pdf")
 
 # benchmarks for J as a function of N
-J = np.arange(2, 12, 2)
-N = np.arange(1000, 11000, 1000)
-M = 2
+#J = np.arange(10, 60, 10)
+#N = np.arange(1000, 11000, 1000)
+#M = 2
 
-res = np.zeros((len(J), len(N)))
-for i, j in itertools.product(range(len(J)), range(len(N))):
-    res[i, j] = benchmark(N[j], M, J[i])
-np.savetxt("data/benchmarks_JN.txt", res)
+#res = np.zeros((len(J), len(N)))
+#for i, j in itertools.product(range(len(J)), range(len(N))):
+#    res[i, j] = benchmark(N[j], M, J[i])
+#np.savetxt("data/benchmarks_JN.txt", res)
 
-pl.figure(figsize=(10, 7))
-for i in range(len(J)):
-    pl.loglog(N, res[i], '.-', color=colors[i%len(colors)], 
-              markeredgecolor='k', label="J={0}".format(2*J[i]))
-pl.legend()
-pl.savefig("plots/benchmarks_JN.pdf")
+#pl.figure(figsize=(10, 7))
+#for i in range(len(J)):
+#    pl.loglog(N, res[i], '.-', color=colors[i%len(colors)], 
+#              markeredgecolor='k', label="J={0}".format(2*J[i]))
+#pl.legend()
+#pl.savefig("plots/benchmarks_JN.pdf")
 
 # benchmarks for J as a function of M
-J = np.arange(2, 12, 2)
-M = np.arange(1, 11, 1)
+J = np.arange(10, 60, 10)
+M = np.arange(20, 100, 20)
 N = 100
 
 res = np.zeros((len(J), len(M)))
@@ -125,7 +125,7 @@ pl.savefig("plots/benchmarks_JM.pdf")
 
 # benchmarks for N as a function of M
 N = np.arange(2000, 10000, 2000)
-M = np.arange(1, 11, 1)
+M = np.arange(20, 100, 20)
 J = 1
 
 pl.figure(figsize=(10, 7))

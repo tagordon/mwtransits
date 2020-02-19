@@ -106,6 +106,13 @@ class GP:
 
     def apply_inverse(self, rhs):
         return self.general_solve_op(self.U, self.P, self.d, self.W, rhs)[0]
+    
+    def apply_inverse_vector(self, rhs):
+        return self.vector_solve_op(self.U, 
+                                    self.P, 
+                                    self.d, 
+                                    self.W, 
+                                    tt.reshape(self.rhs, (self.rhs.size, 1)))[0]
 
     def predict(
         self,
