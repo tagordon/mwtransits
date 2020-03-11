@@ -59,7 +59,7 @@ def benchmark(N, M, J, maxtime=10.0, trials=3, batch=10):
 #M = np.arange(1, 6, 1)
 #N = np.arange(1000, 11000, 1000)
 #J = 1
-
+#
 #res = np.zeros((len(M), len(N)))
 #for i, j in itertools.product(range(len(M)), range(len(N))):
 #    res[i, j] = benchmark(N[j], M[i], J)
@@ -70,6 +70,8 @@ def benchmark(N, M, J, maxtime=10.0, trials=3, batch=10):
 #    pl.loglog(N, res[i], '.-', color=colors[i%len(colors)], 
 #              markeredgecolor='k', label="M={0}".format(M[i]))
 #pl.legend()
+#pl.xlabel("N (size of first dimension)")
+#pl.ylabel("time (seconds)")
 #pl.savefig("plots/benchmarks_MN.pdf")
 
 # benchmarks for M as a function of J 
@@ -87,13 +89,15 @@ def benchmark(N, M, J, maxtime=10.0, trials=3, batch=10):
 #    pl.loglog(J, res[i], '.-', color=colors[i%len(colors)], 
 #              markeredgecolor='k', label="M={0}".format(M[i]))
 #pl.legend()
+#pl.xlabel("J (number of terms in kernel)")
+#pl.ylabel("time (seconds)")
 #pl.savefig("plots/benchmarks_MJ.pdf")
 
 # benchmarks for J as a function of N
 #J = np.arange(10, 60, 10)
 #N = np.arange(1000, 11000, 1000)
 #M = 2
-
+#
 #res = np.zeros((len(J), len(N)))
 #for i, j in itertools.product(range(len(J)), range(len(N))):
 #    res[i, j] = benchmark(N[j], M, J[i])
@@ -104,6 +108,8 @@ def benchmark(N, M, J, maxtime=10.0, trials=3, batch=10):
 #    pl.loglog(N, res[i], '.-', color=colors[i%len(colors)], 
 #              markeredgecolor='k', label="J={0}".format(2*J[i]))
 #pl.legend()
+#pl.xlabel("N (number of points in first dimension)")
+#pl.ylabel("time (seconds)")
 #pl.savefig("plots/benchmarks_JN.pdf")
 
 # benchmarks for J as a function of M
@@ -121,6 +127,8 @@ for i in range(len(J)):
     pl.loglog(M, res[i], '.-', color=colors[i%len(colors)], 
               markeredgecolor='k', label="J={0}".format(2*J[i]))
 pl.legend()
+pl.xlabel("M (size of second dimension)")
+pl.ylabel("time (seconds)")
 pl.savefig("plots/benchmarks_JM.pdf")
 
 # benchmarks for N as a function of M
@@ -139,21 +147,25 @@ for i in range(len(N)):
     pl.loglog(M, res[i], '.-', color=colors[i%len(colors)], 
               markeredgecolor='k', label="N={0}".format(N[i]))
 pl.legend()
+pl.xlabel("M (size of second dimension)")
+pl.ylabel("time (seconds)")
 pl.savefig("plots/benchmarks_NM.pdf")
     
 # benchmarks for N as a function of J
-N = np.arange(2000, 10000, 2000)
-J = np.arange(10, 110, 10)
-M = 2
+#N = np.arange(2000, 10000, 2000)
+#J = np.arange(10, 110, 10)
+#M = 2
 
-res = np.zeros((len(N), len(J)))
-for i, j in itertools.product(range(len(N)), range(len(J))):
-    res[i, j] = benchmark(N[i], M, J[j])
-np.savetxt("data/benchmarks_NJ.txt", res)
+#res = np.zeros((len(N), len(J)))
+#for i, j in itertools.product(range(len(N)), range(len(J))):
+#    res[i, j] = benchmark(N[i], M, J[j])
+#np.savetxt("data/benchmarks_NJ.txt", res)
 
-pl.figure(figsize=(10, 7))
-for i in range(len(N)):
-    pl.loglog(J, res[i], '.-', color=colors[i%len(colors)], 
-              markeredgecolor='k', label="N={0}".format(N[i]))
-pl.legend()
-pl.savefig("plots/benchmarks_NJ.pdf")
+#pl.figure(figsize=(10, 7))
+#for i in range(len(N)):
+#    pl.loglog(J, res[i], '.-', color=colors[i%len(colors)], 
+#              markeredgecolor='k', label="N={0}".format(N[i]))
+#pl.legend()
+#pl.xlabel("J (number of terms in kernel)")
+#pl.ylabel("time (seconds)")
+#pl.savefig("plots/benchmarks_NJ.pdf")

@@ -18,14 +18,15 @@ def make_data(t, log_S0, log_w0, log_Q, logsig,
     kernel = xo.gp.terms.SHOTerm(
         log_S0 = log_S0,
         log_w0 = log_w0,
-        log_Q=log_Q
+        log_Q = log_Q
     )
     J = 4
     
     q = np.array([1, a])
     Q = q[:, None]*q[None, :]
     diag = np.exp(2*logsig)*np.ones((2, len(t)))
-    gp = GP(kernel, t, diag, J=J, Q=Q)
+    kernel = xo.gp.terms.KroneckerTerm(kernel, Q)
+    gp = GP(kernel, t, diag, J=J)
     n = gp.dot_l(np.random.randn(2*len(t), 1)).eval()
     transit = tt.reshape(tt.tile(transit, (2, 1)).T, 
                          (1, 2*transit.shape[0])).T
@@ -68,8 +69,9 @@ def run_mcmc_2d(t, data, logS0_init,
     
         q = tt.stack(1, a)
         Q = q[:, None]*q[None, :]
+        kernel = xo.gp.terms.KroneckerTerm(kernel, Q)
         diag = np.exp(2*logsig_init)*tt.ones((2, len(t)))
-        gp = GP(kernel, t, diag, J=4, Q=Q)
+        gp = GP(kernel, t, diag, J=4)
 
         # Compute the Gaussian Process likelihood and add it into the
         # the PyMC3 model as a "potential"
@@ -178,7 +180,7 @@ def load_models(t, data1, data2, logS0_init,
             log_Q=logQ_init
         )
     
-        diag = np.exp(2*logsig_init)*tt.ones((1, len(t)))
+        diag = np.exp(2*logsig_init)*tt.ones(len(t))
         gp = GP(kernel, t, diag, J=2)
 
         # Compute the Gaussian Process likelihood and add it into the
@@ -187,7 +189,7 @@ def load_models(t, data1, data2, logS0_init,
 
         # Compute the mean model prediction for plotting purposes
         #pm.Deterministic("mu", gp.predict())
-        map_soln = xo.optimize(start=model1d.test_point, verbose=False)
+        #map_soln = xo.optimize(start=model1d.test_point, verbose=False)
         
     with pm.Model() as model2d:
         #logsig = pm.Uniform("logsig", lower=-20.0, upper=0.0, testval=logsig_init)
@@ -219,8 +221,9 @@ def load_models(t, data1, data2, logS0_init,
     
         q = tt.stack(1, a)
         Q = q[:, None]*q[None, :]
+        kernel = xo.gp.terms.KroneckerTerm(kernel, Q)
         diag = np.exp(2*logsig_init)*tt.ones((2, len(t)))
-        gp = GP(kernel, t, diag, J=4, Q=Q)
+        gp = GP(kernel, t, diag, J=4)
 
         # Compute the Gaussian Process likelihood and add it into the
         # the PyMC3 model as a "potential"
@@ -228,5 +231,5 @@ def load_models(t, data1, data2, logS0_init,
 
         # Compute the mean model prediction for plotting purposes
         #pm.Deterministic("mu", gp.predict())
-        map_soln = xo.optimize(start=model2d.test_point, verbose=False)
+        #map_soln = xo.optimize(start=model2d.test_point, verbose=False)
     return model1d, model2d
